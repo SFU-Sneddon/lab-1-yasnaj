@@ -20,8 +20,8 @@ knitr::opts_chunk$set(echo = TRUE)
 The following code will ensure you have the necessary proxy settings in your ssh config. It also creates a symbolic link (like a shortcut) to the directory that contains the course files. If this is nonsense to you, don't worry about it and just read on. *If you are running this file for the second+ time, then you need to comment out these lines by adding # at the start of both of them.*
 
 ```{bash}
-mkdir ~/MBB243/
-ln -s /local-scratch/course_files/MBB243/ ~/files
+#mkdir ~/MBB243/
+#ln -s /local-scratch/course_files/MBB243/ ~/files
 ```
 
 The first run of the code chunk above (or the first time you knit this document) should automatically generate a link to the folder that contains all of the files required for our course this semester. You don't have to worry about what this is doing, but we do need this section in here for the first run.
@@ -46,11 +46,12 @@ Each RStudio user is given a home directory on the course server under `/localho
 Add R code and Bash code to the two empty code blocks below, respectively, to print out your current working directory. Add a comment to one of the code blocks that is just the full path to your home directory similar to the examples above.
 
 ```{r}
-
+getwd()
+#"/local-scratch/localhome/yja74/lab-1-yasnaj"
 ```
 
 ```{bash, engine.opts='-l'}
-
+pwd
 ```
 ## Other extremely useful bash commands
 
@@ -85,7 +86,7 @@ head -n 25 /local-scratch/course_files/MBB243/Sneddon_genotypes.txt
 # You can save the output you see by "redirecting" STDOUT to a file. 
 
 head -n 25 /local-scratch/course_files/MBB243/Sneddon_genotypes.txt > ~/MBB243/genotype_head.txt
-
+head -n 25 /local-scratch/course_files/MBB243/Sneddon_genotypes.txt >> ~/MBB243/genotype_head.txt
 ```
 
 You should have a few lines of genotype information in a new file named `~/MBB243/genotype_head.txt`. Do you notice any genotypes in there that look "off"? Assuming we wanted to sanity check this whole file for what genotypes exist, we can use a combination the `cut`, `uniq` and `sort` commands (uniq is dumb and only works properly if its input is sorted). The code chunk below does this but uses our smaller file as input for efficiency. The result should be all unique genotypes in that file. What did we do wrong? 
@@ -95,8 +96,8 @@ cut -f 4 ~/MBB243/genotype_head.txt | sort | uniq
 # to help debug this, deconstruct it into smaller pieces.
 # then try running each set of commands before the pipe, e.g. uncomment the line below and re-run this chunk. What is the output?  
 #This is probably easier to do at the terminal instead of in the Rmarkdown
-# cut -f 4 ~/MBB243/genotype_head.txt | sort 
-# cut -f 4 ~/MBB243/genotype_head.txt 
+#cut -f 4 ~/MBB243/genotype_head.txt | sort 
+#cut -f 4 ~/MBB243/genotype_head.txt 
 ```
 
 ## Setting the value of a variable
@@ -152,7 +153,10 @@ Be careful here with the distinction between `>` and `>>`. The code should only 
 
 `cat ~/.bash_profile`
 
-**DELETE THIS TEXT AND PUT YOUR NEW CODE CHUNK HERE**
+```{bash}
+echo "source ~/.bashrc" > ~/.bash_profile
+echo $(date) >> ~/.bash_profile
+```
 
 ## Setting a variable in R
 
@@ -231,17 +235,17 @@ To run Python code we always need to ensure we've loaded the `reticulate` R pack
 
 **Task** Set eval=TRUE in the two chunks below and run them (in order!).
 
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 library(reticulate)
-use_python("miniconda3/bin/python")
+use_python("~/miniconda3/bin/python")
 use_condaenv("base")
 
 ```
 
 The next code block simply prints the path to the python executable that is used and then loads and tests some functionality provided by the BioPython library. 
 
-```{python, eval=FALSE}
-
+```{python, eval=TRUE}
+import sys
 sys.executable
 from Bio.Seq import Seq
 my_seq = Seq("AGTACACTGGT")
@@ -273,7 +277,7 @@ At the end of every lab, replace TODO with DONE to the left of each task to indi
 |status|task|
 |-|-|
 |DONE|This file has been knit|
-|TODO| My .bashrc file exists|
-|TODO| Miniconda is installed|
-|TODO| I was able to install both Bioconda and samtools using conda|
-|TODO| The last few code chunks that run Python code run without errors when I knit this document|
+|DONE| My .bashrc file exists|
+|DONE| Miniconda is installed|
+|DONE| I was able to install both Bioconda and samtools using conda|
+|DONE| The last few code chunks that run Python code run without errors when I knit this document|
